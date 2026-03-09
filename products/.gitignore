@@ -1,0 +1,5 @@
+/bin/*
+.DS_Store
+*.Development.json
+/obj
+

@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "iwGf8oq8Jb8=",
+  "success": true,
+  "projectFilePath": "/Users/tanarakc/repos/test-07/products/products.csproj",
+  "expectedPackageFiles": [
+    "/Users/tanarakc/.nuget/packages/microsoft.aspnetcore.openapi/10.0.3/microsoft.aspnetcore.openapi.10.0.3.nupkg.sha512",
+    "/Users/tanarakc/.nuget/packages/microsoft.openapi/2.0.0/microsoft.openapi.2.0.0.nupkg.sha512",
+    "/Users/tanarakc/.nuget/packages/npgsql/10.0.1/npgsql.10.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}
