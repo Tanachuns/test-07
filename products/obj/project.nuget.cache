@@ -1,12 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "iwGf8oq8Jb8=",
+  "dgSpecHash": "3aaYRmrXme0=",
   "success": true,
   "projectFilePath": "/Users/tanarakc/repos/test-07/products/products.csproj",
   "expectedPackageFiles": [
     "/Users/tanarakc/.nuget/packages/microsoft.aspnetcore.openapi/10.0.3/microsoft.aspnetcore.openapi.10.0.3.nupkg.sha512",
     "/Users/tanarakc/.nuget/packages/microsoft.openapi/2.0.0/microsoft.openapi.2.0.0.nupkg.sha512",
-    "/Users/tanarakc/.nuget/packages/npgsql/10.0.1/npgsql.10.0.1.nupkg.sha512"
+    "/Users/tanarakc/.nuget/packages/npgsql/10.0.1/npgsql.10.0.1.nupkg.sha512",
+    "/Users/tanarakc/.nuget/packages/serilog/4.3.2-dev-02419/serilog.4.3.2-dev-02419.nupkg.sha512",
+    "/Users/tanarakc/.nuget/packages/serilog.sinks.console/6.1.1/serilog.sinks.console.6.1.1.nupkg.sha512",
+    "/Users/tanarakc/.nuget/packages/serilog.sinks.file/8.0.0-nblumhardt-02322/serilog.sinks.file.8.0.0-nblumhardt-02322.nupkg.sha512"
   ],
   "logs": []
 }

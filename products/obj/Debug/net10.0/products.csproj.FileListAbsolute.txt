@@ -68,3 +68,6 @@
 /Users/tanarakc/repos/test-07/products/obj/Debug/net10.0/products.pdb
 /Users/tanarakc/repos/test-07/products/obj/Debug/net10.0/products.genruntimeconfig.cache
 /Users/tanarakc/repos/test-07/products/obj/Debug/net10.0/ref/products.dll
+/Users/tanarakc/repos/test-07/products/bin/Debug/net10.0/Serilog.dll
+/Users/tanarakc/repos/test-07/products/bin/Debug/net10.0/Serilog.Sinks.Console.dll
+/Users/tanarakc/repos/test-07/products/bin/Debug/net10.0/Serilog.Sinks.File.dll

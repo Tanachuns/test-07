@@ -1,0 +1,2 @@
+10032026 10:11:12 [INF]  [Trace:f28891f7f1403c0bf646746edd409079] Get All Products
+10032026 10:11:13 [INF]  [Trace:f28891f7f1403c0bf646746edd409079] return 2 Products
