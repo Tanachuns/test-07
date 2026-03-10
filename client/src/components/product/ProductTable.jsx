@@ -61,7 +61,7 @@ const ProductTable = () => {
                     {/* row 1 */}
                     {products.map((item, index) => (
                             <tr key={index}>
-                                <th>{index+1}</th>
+                                <th>{item.id}</th>
                                 <td>{item.productcode}</td>
                                 <td><button onClick={()=> {
                                     setQrModalOpen(true);

@@ -15,6 +15,7 @@ public class Product
 
     public class ProductEntity
     {
+        public int id {get;set;}
         public string productcode {get;set;}
         public DateTime create_date {get;set;}
 
@@ -27,6 +28,7 @@ public class Product
         {
             productcode = reader.GetString(0);
             create_date = reader.GetDateTime(1);
+            id = reader.GetInt32(2);
         }
 
         
