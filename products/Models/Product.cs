@@ -1,10 +1,16 @@
+using System.Text.RegularExpressions;
 using Npgsql;
 
 public class Product
 {
     public class Request 
     {
-        public string? ProductCode {get;set;}
+        public string ProductCode {get;set;}
+        public bool Validate()
+        {
+            string regexPattern = "^[A-Z0-9]{5}(-[A-Z0-9]{5}){5}$";
+            return (!string.IsNullOrEmpty(this.ProductCode) || Regex.Match(this.ProductCode, regexPattern).Success);
+        }
     }
 
     public class ProductEntity
@@ -22,6 +28,8 @@ public class Product
             productcode = reader.GetString(0);
             create_date = reader.GetDateTime(1);
         }
+
+        
     }
    
 }

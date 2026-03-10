@@ -36,6 +36,28 @@ public class ProductRepository
 
         return entities;
     }
+    
+    public List<Product.ProductEntity> GetSingle(Product.ProductEntity productEntity)
+    {
+        List<Product.ProductEntity> entities = new ();
+        using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+        {
+            string sql = "SELECT * from products where  productcode = @productcode";
+
+            NpgsqlCommand cmd = new NpgsqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("@productcode", productEntity.productcode);
+            conn.Open();
+            NpgsqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                entities.Add(new Product.ProductEntity(reader));
+            }
+        }
+
+        return entities;
+    }
+
 
     public async Task<int> Insert(Product.ProductEntity productEntity)
     {

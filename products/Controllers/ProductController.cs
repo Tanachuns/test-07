@@ -13,7 +13,7 @@ public class ProductController(IConfiguration configuration) : ControllerBase
     private readonly ProductRepository repository = new(configuration);
 
 
-    [HttpGet(Name = "Products")]
+    [HttpGet(Name = "Get All Products")]
     public IActionResult Get()
     {
         BaseResponseModel response = new BaseResponseModel();
@@ -32,8 +32,46 @@ public class ProductController(IConfiguration configuration) : ControllerBase
         }
     }
 
-    [HttpPost(Name = "Product")]
+    [HttpPost(Name = "Insert Product")]
     public async Task<IActionResult> Post(Product.Request request)
+    {
+        BaseResponseModel response = new BaseResponseModel();
+        try
+        {
+            if (request.Validate())
+            {
+                response.IsSuccess = false;
+                response.Message = "Invalid Request.";
+                return BadRequest(response);
+            }
+            
+            Product.ProductEntity entity = new Product.ProductEntity(request.ProductCode);
+            
+            List<Product.ProductEntity>  productEntities = repository.GetSingle(entity);
+            if (productEntities.Count > 0)
+            {
+                response.IsSuccess = false;
+                response.Message = "Product Already Exists";
+                return BadRequest(response);
+            }
+            
+            int effectedRow = await repository.Insert(entity);
+            response.IsSuccess = true;
+            response.Message = $"{effectedRow} Rows Effected;";
+            return Ok(response);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            response.IsSuccess= false;
+            response.Message = "Internal Error.";
+            return StatusCode(500,response);
+        }
+ 
+    }
+    
+    [HttpDelete(Name = "Delete Product")]
+    public async Task<IActionResult> Delete(Product.Request request)
     {
         BaseResponseModel response = new BaseResponseModel();
         try
