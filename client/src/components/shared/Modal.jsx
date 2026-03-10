@@ -20,8 +20,8 @@ const Modal = ({ open, title, children, onClose }) => {
              <h3 className="font-bold text-lg">{title}</h3>
 
              {/* Body */}
-             <div className="py-4">
-                 {children}
+             <div className="p-4 w-fit m-auto">
+                    {children}
              </div>
 
              {/* Footer */}

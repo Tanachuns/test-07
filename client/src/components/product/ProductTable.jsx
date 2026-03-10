@@ -2,12 +2,14 @@ import React, {useEffect} from 'react';
 import axios from "axios";
 import Modal from "../shared/Modal.jsx";
 import ConfirmModal from "../shared/ConfirmModal.jsx";
+import {QRCodeCanvas} from "qrcode.react";
 
 const ProductTable = () => {
 
     const [products, setProducts] = React.useState([]);
     const [qrModalOpen, setQrModalOpen] = React.useState(false);
     const [deleteModalOpen, setDeleteModalOpen] = React.useState(false);
+    const [targetProduct, setTargetProduct] = React.useState(null);
     
     
     const getsProduct = ()=>{
@@ -29,7 +31,7 @@ const ProductTable = () => {
         ])
     }
     
-    
+
 
 
     useEffect(getsProduct,[qrModalOpen,deleteModalOpen])
@@ -37,7 +39,7 @@ const ProductTable = () => {
     
     return (
         <>
-            <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
+            <div className="overflow-x-auto mt-5 rounded-box border border-base-content/5 bg-base-100">
                 <table className="table">
                     {/* head */}
                     <thead>
@@ -51,18 +53,27 @@ const ProductTable = () => {
                     <tbody>
                     {/* row 1 */}
                     {products.map((item, index) => (
-                        <tr key={index}>
-                            <th>{index+1}</th>
-                            <td>{item.productCode}</td>
-                            <td><button onClick={()=>setQrModalOpen(true)} className="btn btn-sm btn-info">View</button></td>
-                            <td><button onClick={()=>setDeleteModalOpen(true)} className="btn btn-sm btn-error">Delete</button></td>
-                            <ConfirmModal open={deleteModalOpen} title={"ยืนยันการลบข้อมูล"} children={`ต้องการลบข้อมูล รหัสสินค้า ${item.productCode} หรือไม่?`} onConfirm={()=>{alert("nice"); setDeleteModalOpen(false)}} onClose={()=>setDeleteModalOpen(false)} />
-                            <Modal open={qrModalOpen} title={"View Qrcode"}  onClose={()=>setQrModalOpen(false)} />
-                        </tr>
+                            <tr key={index}>
+                                <th>{index+1}</th>
+                                <td>{item.productCode}</td>
+                                <td><button onClick={()=> {
+                                    setQrModalOpen(true);
+                                    setTargetProduct(item.productCode);
+                                }} className="btn btn-sm btn-info">QR</button></td>
+                                <td><button onClick={()=> {
+                                    setDeleteModalOpen(true);
+                                    setTargetProduct(item.productCode);
+                                }} className="btn btn-sm btn-error">ลบ</button></td>
+                            
+                            </tr>
                     ))}
                     </tbody>
                 </table>
             </div>
+            <ConfirmModal open={deleteModalOpen} title={"ยืนยันการลบข้อมูล"} children={`ต้องการลบข้อมูล รหัสสินค้า ${targetProduct} หรือไม่?`} onConfirm={()=>{alert("nice"); setDeleteModalOpen(false)}} onClose={()=>setDeleteModalOpen(false)} />
+            <Modal open={qrModalOpen} title={"View Qrcode"}    onClose={()=>setQrModalOpen(false)} >
+                <QRCodeCanvas value={targetProduct} />
+            </Modal>
             
         </>
     );
