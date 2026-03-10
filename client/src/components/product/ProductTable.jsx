@@ -40,7 +40,7 @@ const ProductTable = () => {
     return (
         <>
             <div className="overflow-x-auto mt-5 rounded-box border border-base-content/5 bg-base-100">
-                <table className="table">
+                <table className="table m-3">
                     {/* head */}
                     <thead>
                     <tr>
@@ -70,7 +70,11 @@ const ProductTable = () => {
                     </tbody>
                 </table>
             </div>
-            <ConfirmModal open={deleteModalOpen} title={"ยืนยันการลบข้อมูล"} children={`ต้องการลบข้อมูล รหัสสินค้า ${targetProduct} หรือไม่?`} onConfirm={()=>{alert("nice"); setDeleteModalOpen(false)}} onClose={()=>setDeleteModalOpen(false)} />
+            <ConfirmModal open={deleteModalOpen} title={"ยืนยันการลบข้อมูล"} onConfirm={()=>{alert("nice"); setDeleteModalOpen(false)}} onClose={()=>setDeleteModalOpen(false)} >
+               <>
+                   ต้องการลบข้อมูล รหัสสินค้า <br/>{targetProduct}<br/>หรือไม่?
+               </>
+            </ConfirmModal>
             <Modal open={qrModalOpen} title={"View Qrcode"}    onClose={()=>setQrModalOpen(false)} >
                 <QRCodeCanvas value={targetProduct} />
             </Modal>
