@@ -6,7 +6,7 @@ public class Product
     public class Request 
     {
         public string ProductCode {get;set;}
-        public bool Validate()
+        public bool IsValid()
         {
             string regexPattern = "^[A-Z0-9]{5}(-[A-Z0-9]{5}){5}$";
             return (!string.IsNullOrEmpty(this.ProductCode) || Regex.Match(this.ProductCode, regexPattern).Success);

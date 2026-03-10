@@ -38,7 +38,7 @@ public class ProductController(IConfiguration configuration) : ControllerBase
         BaseResponseModel response = new BaseResponseModel();
         try
         {
-            if (request.Validate())
+            if (!request.IsValid())
             {
                 response.IsSuccess = false;
                 response.Message = "Invalid Request.";
@@ -76,17 +76,22 @@ public class ProductController(IConfiguration configuration) : ControllerBase
         BaseResponseModel response = new BaseResponseModel();
         try
         {
-            string regexPattern = "^[A-Z0-9]{5}(-[A-Z0-9]{5}){5}$";
-            if (string.IsNullOrEmpty(request.ProductCode)|| !Regex.Match(request.ProductCode,regexPattern).Success)
+            if (!request.IsValid())
             {
                 response.IsSuccess = false;
                 response.Message = "Invalid Request.";
                 return BadRequest(response);
             }
-
             Product.ProductEntity entity = new Product.ProductEntity(request.ProductCode);
-
-            int effectedRow = await repository.Insert(entity);
+            List<Product.ProductEntity>  productEntities = repository.GetSingle(entity);
+            if (productEntities.Count == 0)
+            {
+                response.IsSuccess = false;
+                response.Message = "Product Not Found.";
+                return BadRequest(response);
+            }
+            
+            int effectedRow = await repository.Delete(entity);
             response.IsSuccess = true;
             response.Message = $"{effectedRow} Rows Effected;";
             return Ok(response);
@@ -98,6 +103,5 @@ public class ProductController(IConfiguration configuration) : ControllerBase
             response.Message = "Internal Error.";
             return StatusCode(500,response);
         }
- 
     }
 }

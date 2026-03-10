@@ -74,4 +74,18 @@ public class ProductRepository
         return effectedRow;
     }
     
+    public async Task<int> Delete(Product.ProductEntity productEntity)
+    {
+        int effectedRow = 0;
+        using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+        {
+            string sql = $@"DELETE FROM products WHERE productcode = @productcode;";
+            conn.Open();
+
+            NpgsqlCommand cmd = new NpgsqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("@productcode", productEntity.productcode);
+            effectedRow = await cmd.ExecuteNonQueryAsync();
+        }
+        return effectedRow;
+    }
 }
