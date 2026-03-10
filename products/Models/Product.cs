@@ -11,6 +11,12 @@ public class Product
     {
         public string productcode {get;set;}
         public DateTime create_date {get;set;}
+
+        public ProductEntity(string _productcode)
+        {
+            productcode = _productcode;
+        }
+
         public ProductEntity(NpgsqlDataReader reader)
         {
             productcode = reader.GetString(0);

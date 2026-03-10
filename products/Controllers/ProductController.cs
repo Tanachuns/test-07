@@ -7,15 +7,10 @@ namespace products.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ProductController : ControllerBase
+public class ProductController(IConfiguration configuration) : ControllerBase
 {
-    private readonly IConfiguration _configuration;
-    private readonly ProductRepository repository;
-    public ProductController(IConfiguration configuration)
-    {
-        _configuration = configuration;
-        repository = new ProductRepository(configuration);
-    }
+    private readonly IConfiguration _configuration = configuration;
+    private readonly ProductRepository repository = new(configuration);
 
 
     [HttpGet(Name = "Products")]
@@ -25,6 +20,7 @@ public class ProductController : ControllerBase
         try
         {
             var products = repository.GetAll();
+            response.IsSuccess = true;
             response.data = products;
             return Ok(response);
         }
@@ -37,26 +33,29 @@ public class ProductController : ControllerBase
     }
 
     [HttpPost(Name = "Product")]
-    public IActionResult Post(Product.Request request)
+    public async Task<IActionResult> Post(Product.Request request)
     {
         BaseResponseModel response = new BaseResponseModel();
         try
         {
-            string regexpattern = "^[A-Za-z0-9]{5}(-[A-Za-z0-9]{5}){4}$";
-            if (string.IsNullOrEmpty(request.ProductCode)|| !Regex.Match(request.ProductCode,regexpattern).Success)
+            string regexPattern = "^[A-Z0-9]{5}(-[A-Z0-9]{5}){5}$";
+            if (string.IsNullOrEmpty(request.ProductCode)|| !Regex.Match(request.ProductCode,regexPattern).Success)
             {
                 response.IsSuccess = false;
                 response.Message = "Invalid Request.";
                 return BadRequest(response);
             }
 
-            
-            
+            Product.ProductEntity entity = new Product.ProductEntity(request.ProductCode);
 
+            int effectedRow = await repository.Insert(entity);
+            response.IsSuccess = true;
+            response.Message = $"{effectedRow} Rows Effected;";
             return Ok(response);
         }
         catch (Exception ex)
         {
+            Console.WriteLine(ex.Message);
             response.IsSuccess= false;
             response.Message = "Internal Error.";
             return StatusCode(500,response);

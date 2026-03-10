@@ -7,7 +7,13 @@ public class ProductRepository
     private string connectionString;
     public ProductRepository(IConfiguration configuration)
     {
-           connectionString = configuration.GetConnectionString("pgpool");
+        var conn = configuration?.GetConnectionString("pgpool");
+
+        if (string.IsNullOrEmpty(conn))
+        {
+            throw new Exception("invalid appsettings");
+        }
+        connectionString = conn;
     }
 
     public List<Product.ProductEntity> GetAll()
@@ -31,5 +37,19 @@ public class ProductRepository
         return entities;
     }
 
+    public async Task<int> Insert(Product.ProductEntity productEntity)
+    {
+        int effectedRow = 0;
+        using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+        {
+            string sql = $@"INSERT INTO products (productcode) VALUES (@productcode);";
+            conn.Open();
+
+            NpgsqlCommand cmd = new NpgsqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("@productcode", productEntity.productcode);
+            effectedRow = await cmd.ExecuteNonQueryAsync();
+        }
+        return effectedRow;
+    }
     
 }
