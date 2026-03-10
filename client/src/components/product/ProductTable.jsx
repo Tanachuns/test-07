@@ -1,9 +1,11 @@
 import React, {useEffect} from 'react';
 import axios from "axios";
+import Modal from "../shared/Modal.jsx";
 
 const ProductTable = () => {
-    
+
     const [products, setProducts] = React.useState([]);
+    const [qrModalOpen, setQrModalOpen] = React.useState(false);
     
     
     const getsProduct = ()=>{
@@ -24,37 +26,41 @@ const ProductTable = () => {
             }
         ])
     }
+    
+    
 
 
     useEffect(getsProduct,[])
     
     
     return (
-        <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
-            <table className="table">
-                {/* head */}
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>รหัสสินค้า</th>
-                    <th>View</th>
-                    <th>Delete</th>
-                </tr>
-                </thead>
-                <tbody>
-                {/* row 1 */}
-                {products.map((item, index) => (
-                    <tr key={index}>
+        <>
+            <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
+                <table className="table">
+                    {/* head */}
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>รหัสสินค้า</th>
+                        <th>View</th>
+                        <th>Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {/* row 1 */}
+                    {products.map((item, index) => (
+                        <tr key={index}>
                             <th>{index+1}</th>
                             <td>{item.productCode}</td>
-                            <td><button className="btn btn-sm btn-info">View</button></td>
+                            <td><button onClick={()=>setQrModalOpen(true)} className="btn btn-sm btn-info">View</button></td>
                             <td><button className="btn btn-sm btn-error">Delete</button></td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
-        </div>
-        
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+            </div>
+            <Modal open={qrModalOpen} title={"View Qrcode"}  onClose={()=>setQrModalOpen(false)} />
+        </>
     );
 };
 
