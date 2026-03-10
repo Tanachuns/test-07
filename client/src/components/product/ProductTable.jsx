@@ -1,11 +1,13 @@
 import React, {useEffect} from 'react';
 import axios from "axios";
 import Modal from "../shared/Modal.jsx";
+import ConfirmModal from "../shared/ConfirmModal.jsx";
 
 const ProductTable = () => {
 
     const [products, setProducts] = React.useState([]);
     const [qrModalOpen, setQrModalOpen] = React.useState(false);
+    const [deleteModalOpen, setDeleteModalOpen] = React.useState(false);
     
     
     const getsProduct = ()=>{
@@ -30,7 +32,7 @@ const ProductTable = () => {
     
 
 
-    useEffect(getsProduct,[])
+    useEffect(getsProduct,[qrModalOpen,deleteModalOpen])
     
     
     return (
@@ -53,13 +55,15 @@ const ProductTable = () => {
                             <th>{index+1}</th>
                             <td>{item.productCode}</td>
                             <td><button onClick={()=>setQrModalOpen(true)} className="btn btn-sm btn-info">View</button></td>
-                            <td><button className="btn btn-sm btn-error">Delete</button></td>
+                            <td><button onClick={()=>setDeleteModalOpen(true)} className="btn btn-sm btn-error">Delete</button></td>
+                            <ConfirmModal open={deleteModalOpen} title={"ยืนยันการลบข้อมูล"} children={`ต้องการลบข้อมูล รหัสสินค้า ${item.productCode} หรือไม่?`} onConfirm={()=>{alert("nice"); setDeleteModalOpen(false)}} onClose={()=>setDeleteModalOpen(false)} />
+                            <Modal open={qrModalOpen} title={"View Qrcode"}  onClose={()=>setQrModalOpen(false)} />
                         </tr>
                     ))}
                     </tbody>
                 </table>
             </div>
-            <Modal open={qrModalOpen} title={"View Qrcode"}  onClose={()=>setQrModalOpen(false)} />
+            
         </>
     );
 };

@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from 'react';
 
 
-const Modal = ({ open, title, children, onClose }) => {
+const ConfirmModal = ({ open, title, children, onClose,onConfirm }) => {
     const dialogRef = useRef(null);
 
     useEffect(() => {
@@ -26,8 +26,11 @@ const Modal = ({ open, title, children, onClose }) => {
 
              {/* Footer */}
              <div className="modal-action">
-                 <button className="btn" onClick={onClose}>
-                     ปิด
+                 <button className="btn btn-success" onClick={onConfirm}>
+                     ตกลง
+                 </button>
+                 <button className="btn btn-error" onClick={onClose}>
+                     ยกเลิก
                  </button>
              </div>
 
@@ -38,4 +41,4 @@ const Modal = ({ open, title, children, onClose }) => {
     );
 };
 
-export default Modal;
+export default ConfirmModal;
