@@ -1,7 +1,8 @@
 **Todo**
 - UI
-- API
-    - Add
-    - Delete
+  - API
+    - [x] GetAll
+    - [x] Add
+    - [x] Delete
 - DB
-    - table prod
+    - [x] table products 
