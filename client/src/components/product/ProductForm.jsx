@@ -1,56 +1,78 @@
-import React from 'react';
+import React, {useRef, useState} from 'react';
 import axios from "axios";
+import Modal from "../shared/Modal.jsx";
 
 const ProductForm = () => {
+    const dialogRef = useRef(null);
+    const [openCreateResultModal, setOpenCreateResultModal] = useState(false);
+    const [createStatus,setStatus] = useState({});
     
     const submitHandler = (e) => {
         e.preventDefault();
         const _productCode = e.target.productCode.value;
-        if(!productCodeValidator(productCode)) {
+        if(!productCodeValidator(_productCode)) {
             //modal err
+            console
+                .log("Error getting product code")
             return; 
         }
         createProduct(_productCode);
     }
     
     const createProduct = (productCode)=>{
-        axios.delete('/product', {
+        axios.post(import.meta.env.VITE_API_URL+'/product', {
             productCode:productCode
         }).then(res => {
-            //modal success
-            console.log(res);
+            console.log(res.data);
+            //setStatus(res.data);
+            setStatus(res.data);
+            setOpenCreateResultModal(true);
+
         }).catch(err => {
-            //modal err
-            console.log(err);
-        })
+            if (err.response) {
+                // Server responded with error status (4xx, 5xx)
+                console.log(err.response.data);
+                setStatus(err.response.data);
+                setOpenCreateResultModal(true);
+            }
+            
+        });
     }
-    
+
+   
     const productCodeValidator = (code)=>{
         const regex = /^[A-Z0-9]{5}(-[A-Z0-9]{5}){5}$/;
         return code!=null &&  regex.test(code);
     }
     
+    const UpperHandler = (e) => {
+        e.preventDefault();
+        e.target.value = e.target.value.toUpperCase();
+    }
+    
+    const closeHandler = ()=>{ 
+        setOpenCreateResultModal(false); 
+        if(createStatus.isSuccess){
+            location.reload();
+        }
+    }
+    
     return (
-        <form onSubmit={submitHandler}>
-            <div className='productForm my-2'>
-                <label className="input w-3/4">
-                    <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <g
-                            strokeLinejoin="round"
-                            strokeLinecap="round"
-                            strokeWidth="2.5"
-                            fill="none"
-                            stroke="currentColor"
-                        >
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <path d="m21 21-4.3-4.3"></path>
-                        </g>
-                    </svg>
-                    <input type="search" name="productCode" className="grow" placeholder="Format XXXXX-XXXXX-XXXXX-XXXXX-XXXXX-XXXXX" />
-                </label>
+        <>
+            <form onSubmit={submitHandler} className="w-full my-3">
+                <input maxLength={35} minLength={35} type="search" name="productCode" className="grow input validator w-4/5" onChange={e=>UpperHandler(e)} pattern={"^[A-Z0-9]{5}(-[A-Z0-9]{5}){5}$"} placeholder="รหัสสินค้า"/>
                 <button className="btn btn-primary ml-2">ADD</button>
-            </div>
-        </form>
+                <p className="validator-hint">
+                    รหัสสินค้าต้องมีความยาว 30 ตัวอักษร
+                    <br/>เป็นตัวอักษรภาษาอังกฤษหรือคัวเลข
+                    <br/>มีขีด(-) ขั้นทุกๆ 5 ตัวอักษร
+                    <br/>ตัวอย่าง XXXXX-XXXXX-XXXXX-XXXXX-XXXXX-XXXXX
+                </p>
+            </form>
+            <Modal open={openCreateResultModal} onClose={closeHandler} title={createStatus.isSuccess?"สร้างรายการสำเร็จ":"สร้างรายการผิดพลาด"}>
+                {createStatus.isSuccess?"สร้างรายการสำเร็จ":createStatus.message}
+            </Modal>
+        </>
         
     );
 };

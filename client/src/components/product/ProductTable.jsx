@@ -13,27 +13,34 @@ const ProductTable = () => {
     
     
     const getsProduct = ()=>{
-        // axios.get('/product', {
-        //     productCode:productCode
-        // }).then(res => {
-        //     //modal success
-        //     console.log(res);
-        //     setProducts(res.data.data);
-        // }).catch(err => {
-        //     //modal err
-        //     console.log(err);
-        // })
+        axios.get(import.meta.env.VITE_API_URL+'/product').then(res => {
+            //modal success
+            setProducts(res.data.data);
+        }).catch(err => {
+            //modal err
+            console.log(err);
+        })
         
-        setProducts([
-            {
-                productCode: "TTTTT-TTTTT-TTTTT-TTTTT-TTTTT-TTTTT"
-            }
-        ])
+        // setProducts([
+        //     {
+        //         productCode: "TTTTT-TTTTT-TTTTT-TTTTT-TTTTT-TTTTT"
+        //     }
+        // ])
+    }
+
+    const deleteProduct = (productCode)=>{
+        axios.delete(import.meta.env.VITE_API_URL+'/product',{data:{
+                productCode:targetProduct
+            }}).then(res => {
+            //modal success
+            console.log(res);
+            location.reload();
+        }).catch(err => {
+            //modal err
+            console.log(err.response.data);
+        })
     }
     
-
-
-
     useEffect(getsProduct,[qrModalOpen,deleteModalOpen])
     
     
@@ -55,14 +62,14 @@ const ProductTable = () => {
                     {products.map((item, index) => (
                             <tr key={index}>
                                 <th>{index+1}</th>
-                                <td>{item.productCode}</td>
+                                <td>{item.productcode}</td>
                                 <td><button onClick={()=> {
                                     setQrModalOpen(true);
-                                    setTargetProduct(item.productCode);
+                                    setTargetProduct(item.productcode);
                                 }} className="btn btn-sm btn-info">QR</button></td>
                                 <td><button onClick={()=> {
                                     setDeleteModalOpen(true);
-                                    setTargetProduct(item.productCode);
+                                    setTargetProduct(item.productcode);
                                 }} className="btn btn-sm btn-error">ลบ</button></td>
                             
                             </tr>
@@ -70,7 +77,7 @@ const ProductTable = () => {
                     </tbody>
                 </table>
             </div>
-            <ConfirmModal open={deleteModalOpen} title={"ยืนยันการลบข้อมูล"} onConfirm={()=>{alert("nice"); setDeleteModalOpen(false)}} onClose={()=>setDeleteModalOpen(false)} >
+            <ConfirmModal open={deleteModalOpen} title={"ยืนยันการลบข้อมูล"} onConfirm={deleteProduct} onClose={()=>setDeleteModalOpen(false)} >
                <>
                    ต้องการลบข้อมูล รหัสสินค้า <br/>{targetProduct}<br/>หรือไม่?
                </>

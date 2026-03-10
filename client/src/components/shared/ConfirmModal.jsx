@@ -1,8 +1,9 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 
 const ConfirmModal = ({ open, title, children, onClose,onConfirm }) => {
     const dialogRef = useRef(null);
+    const [isSending, setSending] = useState(false);
 
     useEffect(() => {
         if (open) {
@@ -11,6 +12,13 @@ const ConfirmModal = ({ open, title, children, onClose,onConfirm }) => {
             dialogRef.current.close();
         }
     }, [open]);
+    
+    const sendHandler = async () => {
+        setSending(true);
+        await onConfirm();
+        setSending(false);
+    }
+    
     return (
      <div >
          <dialog ref={dialogRef} className="modal">
@@ -26,7 +34,7 @@ const ConfirmModal = ({ open, title, children, onClose,onConfirm }) => {
 
              {/* Footer */}
              <div className="modal-action">
-                 <button className="btn btn-success" onClick={onConfirm}>
+                 <button className="btn btn-success" disabled={isSending} onClick={sendHandler}>
                      ตกลง
                  </button>
                  <button className="btn btn-error" onClick={onClose}>
