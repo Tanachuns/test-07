@@ -1,14 +1,34 @@
 import React from 'react';
+import axios from "axios";
 
 const ProductForm = () => {
-    const [productCode, setpProductCode] = React.useState("");
     
     const submitHandler = (e) => {
         e.preventDefault();
-        console.log(e.target.productCode.value);
+        const _productCode = e.target.productCode.value;
+        if(!productCodeValidator(productCode)) {
+            //modal err
+            return; 
+        }
+        createProduct(_productCode);
     }
     
-
+    const createProduct = (productCode)=>{
+        axios.delete('/product', {
+            productCode:productCode
+        }).then(res => {
+            //modal success
+            console.log(res);
+        }).catch(err => {
+            //modal err
+            console.log(err);
+        })
+    }
+    
+    const productCodeValidator = (code)=>{
+        const regex = /^[A-Z0-9]{5}(-[A-Z0-9]{5}){5}$/;
+        return code!=null &&  regex.test(code);
+    }
     
     return (
         <form onSubmit={submitHandler}>
