@@ -35,8 +35,7 @@ builder.Services.AddCors(options =>
 
 
 //Map Interface with Controller
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddRepositories().AddServices();
 
 var app = builder.Build();
 
