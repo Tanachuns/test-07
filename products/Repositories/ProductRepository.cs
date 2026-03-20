@@ -1,7 +1,7 @@
-
-using Microsoft.AspNetCore.SignalR;
 using Npgsql;
 using products.Interfaces;
+
+namespace products.Repositories;
 
 public class ProductRepository  : IProductRepository
 {

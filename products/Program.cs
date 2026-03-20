@@ -1,3 +1,6 @@
+using products.Interfaces;
+using products.Repositories;
+using products.Services;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +32,12 @@ builder.Services.AddCors(options =>
         });
 });
 
+
+
+//Map Interface with Controller
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductService, ProductService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -42,5 +51,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+
 
 app.Run();
