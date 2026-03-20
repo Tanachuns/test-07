@@ -1,8 +1,9 @@
 
 using Microsoft.AspNetCore.SignalR;
 using Npgsql;
+using products.Interfaces;
 
-public class ProductRepository
+public class ProductRepository  : IProductRepository
 {
     private string connectionString;
     public ProductRepository(IConfiguration configuration)
