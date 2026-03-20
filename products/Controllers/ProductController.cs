@@ -23,7 +23,7 @@ public class ProductController(IConfiguration configuration) : ControllerBase
         {
             var products = repository.GetAll();
             response.IsSuccess = true;
-            response.data = products;
+            response.Data = products;
             
             Log.Information($"return {products.Count} Products");
             return Ok(response);
